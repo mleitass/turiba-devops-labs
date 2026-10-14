@@ -1,5 +1,4 @@
 # Turiba DevOps labs
-
 Lab guides for **Software Development and IT Operations (DevOps)**, course ELE1013M, Turiba University.
 
 ## Labs
