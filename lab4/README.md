@@ -1,6 +1,6 @@
 # Lab 4 · Multi-service app with Compose
 
-GitHub user: <you> · Reference files used (Lab 2 fallback): no
+GitHub user: <you> · Reference files used (Lab 2 fallback): yes
 
 <!-- Keep every heading as it is: the grader finds the sections by name. Fill in every blank (four underscores) and your GitHub user name: check.sh writeup flags anything left. -->
 
@@ -10,20 +10,20 @@ GitHub user: <you> · Reference files used (Lab 2 fallback): no
 flowchart LR
   B["Browser on your laptop"]
   subgraph front["network: front"]
-    W["web: nginx :____"]
+    W["web: nginx :"80"]
   end
-  A["api :5000 · networks: ____, ____"]
+  A["api :5000 · networks: front, back"]
   subgraph back["network: back"]
     D[("db :5432")]
   end
-  V[("volume ____")]
-  B -->|"HTTP localhost:____"| W
-  W -->|"HTTP ____:____"| A
-  A -->|"PostgreSQL ____:____"| D
+  V[("volume pgdata")]
+  B -->|"HTTP localhost:8080"| W
+  W -->|"HTTP api:5000"| A
+  A -->|"PostgreSQL db:5432"| D
   D --- V
 ```
 
-Which arrow crosses from your laptop into Docker: ____
+Which arrow crosses from your laptop into Docker: B --> W
 
 ## 2 · Predictions and what happened
 
@@ -31,12 +31,12 @@ Part 1: fill in "I predicted" (the letter and a one-line reason) before you writ
 
 | # | I predicted | What I saw (command → the deciding output line) | Match? | If not: why |
 |---|-------------|--------------------------------------------------|--------|-------------|
-| P1 | ____ | ____ | ____ | |
-| P2 | ____ | ____ | ____ | |
-| P3 | ____ | ____ | ____ | |
-| P4 | ____ | ____ | ____ | |
-| P5 | ____ | ____ | ____ | |
-| P6 | ____ | ____ | ____ | |
+| P1 | b) nothing — web is on network front only; db is on back | ____ | ____ | ____ | |
+| P2 | b) is refused — port 5432 is not published to localhost |____ | ____ | ____ | |
+| P3 | a) still there — data is stored in the persistent named volume pgdata | ____ | ____ | ____ | |
+| P4 | c) table is gone too — docker compose down -v deletes the volume | ____ | ____ | ____ | |
+| P5 | a) healthy · 500 — /healthz only checks process liveness, not db connectivity | ____ | ____ | ____ | |
+| P6 | b) fail: the name isn't found — laptop browser is not in Docker's internal DNS | ____ | ____ | ____ | |
 
 ## 3 · Backup and restore
 
