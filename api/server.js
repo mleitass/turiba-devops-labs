@@ -91,3 +91,11 @@ ensureSchema()
   });
 
 // Lab 2 (step 2.4): add the SIGTERM handler here.
+
+// Lab 2 (step 2.4): healthz route and SIGTERM handler
+app.get('/healthz', (req, res) => res.status(200).json({ status: 'ok' }));
+
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, closing the server');
+  server.close(() => pool.end().then(() => process.exit(0)));
+});
